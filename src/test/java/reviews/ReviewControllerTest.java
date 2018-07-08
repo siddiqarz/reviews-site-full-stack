@@ -62,14 +62,14 @@ public class ReviewControllerTest {
 		verify(model).addAttribute("reviews", review);
 	}
 	
-	@Test
-	public void shouldAddAllReviewsToModel() {
-		Collection<Review> allReviews = Arrays.asList(review1, review2);
-		when(reviewRepo.findAll()).thenReturn(allReviews);
-		
-		testReview.findAllReviews(model);
-		verify(model).addAttribute("reviews", allReviews);
-	}
+//	@Test
+//	public void shouldAddAllReviewsToModel() {
+//		Collection<Review> allReviews = Arrays.asList(review1, review2);
+//		when(reviewRepo.findAll()).thenReturn(allReviews);
+//		
+//		testReview.findAllReviews(model);
+//		verify(model).addAttribute("reviews", allReviews);
+//	}
 	
 	@Test
 	public void shouldAddOneCategoryToModel() throws CategoryNotFoundException {

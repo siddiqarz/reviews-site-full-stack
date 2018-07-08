@@ -18,28 +18,28 @@ public class ReviewController {
 	@Resource
 	ReviewRepository reviewRepo;
 
-	@RequestMapping("/show-review")
+	@RequestMapping("/review")
 	public String findOneReview(@RequestParam(value="id")long id, Model model) throws ReviewNotFoundException{
 		
 			Optional<Review> review = reviewRepo.findById(id);
 			
 			if(review.isPresent()) {
-				model.addAttribute("reviews", review.get());
+				model.addAttribute("review", review.get());
 				
 			return "review";
 			}
 			throw new ReviewNotFoundException();
 	}
 
-	@RequestMapping("/all-reviews")
-	public String findAllReviews(Model model) {
-	model.addAttribute("reviews", reviewRepo.findAll());
+//	@RequestMapping("/all-reviews")
+//	public String findAllReviews(Model model) {
+//	model.addAttribute("reviews", reviewRepo.findAll());
+//	
+//	return "reviews";
+//		
+//	}
 	
-	return "reviews";
-		
-	}
-	
-	@RequestMapping("/show-category")
+	@RequestMapping("/category")
 	public String findOneCategory(@RequestParam(value = "id") long categoryId, Model model) throws CategoryNotFoundException {
 	
 		Optional<Category> category = categoryRepo.findById(categoryId);
@@ -52,11 +52,11 @@ public class ReviewController {
 		throw new CategoryNotFoundException();
 	}
 	
-	@RequestMapping("/all-categories")
-	public String findAllCategories(Model model){
-		model.addAttribute("categories", categoryRepo.findAll());
-		
-		return "categories";
-	}
+//	@RequestMapping("/all-categories")
+//	public String findAllCategories(Model model){
+//		model.addAttribute("categories", categoryRepo.findAll());
+//		
+//		return "categories";
+//	}
 
 }

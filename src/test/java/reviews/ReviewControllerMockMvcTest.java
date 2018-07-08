@@ -13,6 +13,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,10 +37,35 @@ public class ReviewControllerMockMvcTest {
 	@Mock
 	private Category category;
 	
+	@Mock
+	private Review review;
+	
 	@Test
 	public void shouldRouteToSingleCategory() throws Exception{
 		long arbitraryCategoryId = 1L;
+		
 		when(categoryRepo.findById(arbitraryCategoryId)).thenReturn(Optional.of(category));
-		mvc.perform(get("/show-category?id=1")).andExpect(view().name(is("category")));
+		mvc.perform(get("/category?id=1")).andExpect(view().name(is("category")));
+	}
+	
+	@Test
+	public void shouldBeOKForCategory() throws Exception {
+		long arbitraryReviewId = 1L;
+		when(categoryRepo.findById(arbitraryReviewId)).thenReturn(Optional.of(category));
+		mvc.perform(get("/category?id=1")).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void shouldRouteToSingleReview() throws Exception { 
+		long arbritraryReviewId = 3L;
+		when(reviewRepo.findById(arbritraryReviewId)).thenReturn(Optional.of(review));
+		mvc.perform(get("/review?id=3")).andExpect(view().name(is("review")));
+	}
+	
+	@Test
+	public void shouldBeOKForReview() throws Exception {
+		long arbitraryReviewId = 3L;
+		when(reviewRepo.findById(arbitraryReviewId)).thenReturn(Optional.of(review));
+		mvc.perform(get("/review?id=3")).andExpect(status().isOk());
 	}
 }
