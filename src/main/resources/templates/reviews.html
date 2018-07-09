@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <html xmlns:th = "http://www.thymeleaf.org"></html>
+    
+    <title>A list of Reviews</title>
+</head>
+<body>
+    <h1>Top Locations Around the World</h1>
+        <div th:each= "review: ${reviews}">
+            <ul>
+                <li>
+                <h2>
+                    <a th:href="@{/review(id=${review.id})}" th:text="${review.title}"></a>
+                </h2>
+                </li>
+            </ul>
+            </div>
+    <nav>
+        <a th:href="@{/show-categories}">Homepage</a>
+    </nav>
+</body>
+</html>

@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Categories</title>
+		
+	<link rel="stylesheet" href="./style.css">
+		<html xmlns:th = "http://www.thymeleaf.org"></html>
+	<title>Review By Category</title>
 </head>
 <body>
-	<h1>List of Categories</h1>
-
-	<div th:each= "category: ${categorory}">
-		<li>
-		<a th:href="@{/category(id=${category.id})}" th:text="${category.name}"></a>
-		</li>
+	<div id=reviews>
+		<h1 th:text="${category.name}"></h1>
+		<article th:each= "review: ${category.reviews}">
+		<h2 th:text="${review.title}"></h2>
+		<img id = "imageUrl" th:src= "${review.imageUrl}"/>	
+		<p th:text="${review.content}"></p>
+		</article>
 	</div>
+		<nav>
+			<a th:href="@{/show-categories}">Homepage</a>	
+		</nav>
 </body>
 </html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <html xmlns:th = "http://www.thymeleaf.org"></html>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <title>Home</title>
+</head>
+<body>
+    <header>
+        <h1>Top Reviews of Vacations Spots Around the World</h1>
+     <header>
+
+<main id=categories>
+        <p>Planning a vacation? About time!Feel free to narrow down your choices if you have an idea of at least what continent 
+         you would like to travel to. We've sorted our top rated vacation spots by continent.
+        </p>
+        <div th:each= "category: ${categories}">
+           <a th:href ="@{/category(id=${category.id})}" th:text="${category.name}"></a>
+        </div>
+        <p>Not So Sure? Not a problem, check them all out
+            <a th:href = "@{/show-reviews}">here</a></p>
+</main>
+
+
+<footer>
+    &copy; 2018 Vacation Reviews
+</footer>
+</body>
+</html>
