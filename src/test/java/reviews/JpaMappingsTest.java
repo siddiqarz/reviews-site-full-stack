@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest
 public class JpaMappingsTest {
@@ -30,6 +31,12 @@ public class JpaMappingsTest {
 
 	@Resource
 	private ReviewRepository reviewRepo;
+	
+	@Resource
+	private TagRepository tagRepo;
+	
+	@Resource
+	private CommentRepository commentRepo;
 
 	@Test
 	public void shouldSaveAndLoadCategory() {
@@ -47,6 +54,33 @@ public class JpaMappingsTest {
 		result.get();
 		assertThat(category.getName(), is("category"));
 	}
+	
+	@Test
+	public void shouldSaveAndLoadTag() {
+		Tag tag = tagRepo.save(new Tag("tag"));
+		long tagId = tag.getId();
+		
+		entityManager.flush();
+		entityManager.clear();
+		
+		Optional<Tag> result = tagRepo.findById(tagId);
+		result.get();
+		assertThat(tag.getName(), is("tag"));
+	}
+	
+//	@Test
+//	public void shouldBeAbleToSaveAndLoadComments() {
+//		Review review = reviewRepo.save(new Review());
+//		Comment comment = commentRepo.save(new Comment("nice", review));
+//		long commentId = comment.getId();
+//		
+//		entityManager.flush();
+//		entityManager.clear();
+//		
+//		Optional<Comment> result = commentRepo.findById(commentId);
+//		result.get();
+//		assertThat(comment.getComment(), is("nice"));
+//	}
 
 	@Test
 	public void shouldGenerateTopicId() {
@@ -62,7 +96,8 @@ public class JpaMappingsTest {
 	@Test
 	public void shouldSaveAndLoadReview() {
 		Category asia = categoryRepo.save(new Category("Asia"));
-		Review review = reviewRepo.save(new Review("Title", "content", "image url", asia));
+		Tag hot = tagRepo.save(new Tag("hot"));
+		Review review = reviewRepo.save(new Review("Title", "content", "image url", asia, hot));
 		// OR Review review = new Review("Title..."image url");
 		// review = reviewRepo.save(review)
 
@@ -80,7 +115,8 @@ public class JpaMappingsTest {
 	public void shouldEstablishReviewToCategoryRelationship() {
 		// To see if category has this review
 		Category asia = categoryRepo.save(new Category("Asia"));
-		Review bay = reviewRepo.save(new Review("Bay", "content", "image", asia));
+		Tag hot = tagRepo.save(new Tag("hot"));
+		Review bay = reviewRepo.save(new Review("Bay", "content", "image", asia, hot));
 
 		long categoryId = asia.getId();
 		long reviewId = bay.getId();
@@ -102,9 +138,9 @@ public class JpaMappingsTest {
 	@Test
 	public void shouldFindReviewsForCategory() {
 		Category asia = categoryRepo.save(new Category("Asia"));
-
-		Review bay = reviewRepo.save(new Review("Bay", "content", "image", asia));
-		Review key = reviewRepo.save(new Review("Bay3", "content2", "image1", asia));
+		Tag hot = tagRepo.save(new Tag("hot"));
+		Review bay = reviewRepo.save(new Review("Bay", "content", "image", asia, hot));
+		Review key = reviewRepo.save(new Review("Bay3", "content2", "image1", asia, hot));
 
 		entityManager.flush();
 		entityManager.clear();
@@ -116,9 +152,9 @@ public class JpaMappingsTest {
 	@Test
 	public void shouldFindReviewByCategoryId() {
 		Category asia = categoryRepo.save(new Category("Asia"));
-
-		Review bay = reviewRepo.save(new Review("Bay", "content", "image", asia));
-		Review key = reviewRepo.save(new Review("Bay3", "content2", "image1", asia));
+		Tag hot = tagRepo.save(new Tag("hot"));
+		Review bay = reviewRepo.save(new Review("Bay", "content", "image", asia, hot));
+		Review key = reviewRepo.save(new Review("Bay3", "content2", "image1", asia,hot));
 
 		long categoryId = asia.getId();
 
@@ -130,4 +166,48 @@ public class JpaMappingsTest {
 		assertThat(reviewsByCategoryId, containsInAnyOrder(bay, key));
 	}
 
+	@Test
+	public void shouldFindReviewsByTagName() {
+		Tag hot = tagRepo.save(new Tag("hot"));
+		Category continent = categoryRepo.save(new Category("continent"));
+		Review testRev = reviewRepo.save(new Review("Some review", "More fluff", "image", continent, hot));
+		Review another = reviewRepo.save(new Review("Adv Java", "Description", "image", continent));
+		
+		entityManager.flush();
+		entityManager.clear();
+		
+		Collection<Review> reviewsForTags = reviewRepo.findByTagsContains(hot);
+		assertThat(reviewsForTags, contains(testRev));
+	}
+	
+	@Test
+	public void shouldBeAbleToGetAllTagsForReview() {
+		Tag hot = tagRepo.save(new Tag("hot"));
+		Tag arts = tagRepo.save(new Tag("arts"));
+		Category continent = categoryRepo.save(new Category("continent"));
+		Review testRev = reviewRepo.save(new Review("Some review", "More fluff", "image", continent, hot, arts));
+		
+		entityManager.flush();
+		entityManager.clear();
+		Collection<Tag> tagsForReview = testRev.getTags();
+		
+		assertThat(tagsForReview, containsInAnyOrder(hot, arts));
+	}
+	
+	
+	
+//	@Test
+//	public void shouldFindReviewForComment() {
+//		Tag hot = tagRepo.save(new Tag("hot"));
+//		Tag arts = tagRepo.save(new Tag("arts"));
+//		Category continent = categoryRepo.save(new Category("continent"));
+//		Review testRev = reviewRepo.save(new Review("Some review", "More fluff", "image", continent, hot, arts));
+//		Comment inputComment = commentRepo.save(new Comment("nice", testRev));
+//		
+//		entityManager.flush();
+//		entityManager.clear();
+//		
+//	Review fromComment = inputComment.getReview();
+//	assertThat(testRev.getId(), is(fromComment.getId()));
+//	}
 }

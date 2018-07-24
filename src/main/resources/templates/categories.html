@@ -23,7 +23,12 @@
         <p>Not So Sure? Not a problem, check them all out
             <a th:href = "@{/show-reviews}">here</a></p>
 </main>
-
+<!-- <section>
+    <h3>Tags</h3>
+    <div th:each="tag: ${tags}">
+        <a th:ref ="@{/tag(id=${tag.id})}" th:text="${tag.name}"></a>
+    </div>
+</section> -->
 
 <footer>
     &copy; 2018 Vacation Reviews

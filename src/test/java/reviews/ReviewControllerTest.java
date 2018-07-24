@@ -19,12 +19,22 @@ public class ReviewControllerTest {
 	@InjectMocks
 	private ReviewController testReview;
 	private ReviewController testCategory;
+	private ReviewController testTag;
 	
 	@Mock
 	private ReviewRepository reviewRepo;
 	
 	@Mock
 	private CategoryRepository categoryRepo;
+	
+	@Mock
+	private TagRepository tagRepo;
+	
+	@Mock
+	private CommentRepository commentRepo;
+	
+	@Mock
+	private Tag tag;
 	
 	@Mock
 	private Category category;
@@ -59,7 +69,7 @@ public class ReviewControllerTest {
 		when(reviewRepo.findById(arbitraryReviewId)).thenReturn(Optional.of(review)); // returns value if present
 		
 		testReview.findOneReview(arbitraryReviewId, model);
-		verify(model).addAttribute("reviews", review);
+		verify(model).addAttribute("review", review);
 	}
 	
 //	@Test
@@ -71,14 +81,20 @@ public class ReviewControllerTest {
 //		verify(model).addAttribute("reviews", allReviews);
 //	}
 	
-	@Test
-	public void shouldAddOneCategoryToModel() throws CategoryNotFoundException {
-		long arbitraryCategoryId = 4L;
-		when(categoryRepo.findById(arbitraryCategoryId)).thenReturn(Optional.of(category));
-		
-		testCategory.findOneCategory(arbitraryCategoryId, model);
-		verify(model).addAttribute("category", category);
-	}
+//	@Test
+//	public void shouldAddOneCategoryToModel() throws CategoryNotFoundException {
+//		long arbitraryCategoryId = 4L;
+//		when(categoryRepo.findById(arbitraryCategoryId)).thenReturn(Optional.of(category));
+//		
+//		testCategory.findOneCategory(arbitraryCategoryId, model);
+//		verify(model).addAttribute("category", category);
+//	}
+//	@Test
+//	public void shouldAddTagsToAModel() throws TagNotFoundException {
+//			String tagName = "tag";
+//			Tag newTag = tagRepo.save(new Tag(tagName));
+//			review1.addTag(newTag);
+//	}
 	
 //	@Test
 //	public void shouldAddAllCategoriesToModel()throws CategoryNotFoundException {
@@ -89,4 +105,6 @@ public class ReviewControllerTest {
 //		verify(model).addAttribute("categories", allCategories);
 //		
 //	}
+	
+	
 }

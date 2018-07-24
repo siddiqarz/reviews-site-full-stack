@@ -17,8 +17,63 @@
 		<h2 th:text= "${review.title}"></h2>
 		<img id = "imageUrl" th:src= "${review.imageUrl}"/><br/>
 		<p th:text = "${review.content}"></p>
+		<ul>
+			<li>
+				<h3>Tags: 
+			<a th:each="tag: ${review.tags}" th:href="@{/tag(id=${tag.id})}" th:text=" ${tag.name} + ' '"></a>
+				</h3>
+			</li>
+		</ul>
 	</article>
 	</div>
+
+			<form method="POST">
+			<input type="text" name="name" placeholder="Add a Tag"/>
+			<input name="id" type="hidden" th:value="${review.id}"/>
+			<button th:formaction="@{/add-tags}">Add</button>
+	</form>
+
+	<form method="POST">
+		<input name="name" type="hidden" th:value="${review.id}" />
+	<ul>
+		<li th:each="tag: ${review.tag}"><a th:href="@{/tag(id=${tag.id})}" th:text=" ${tag.name} + ' '"></a>
+		<button name="tag" value="${tag.id}"
+		th:formaction="@{/delete-tags}">X</button><li>
+	</ul>
+	</form>
+
+  
+	<!-- <form th:action="@{/review(id=${review.id})}" method="post">
+		<div>
+		<textarea name="comments" id="${review.id}" style="font-family:sans-serif;font-size:1.2em;">
+		</textarea>
+		</div>
+		<input type="submit" value="Post Comment"/>
+	</form> -->
+
+
+	<!-- <form method = "POST">
+		<div>
+			<label>Share Your Comments:</label>
+			<input type="text" name="comments"/>
+		</div>
+		
+		<div>
+			<label></label> 
+			<input type= th:text="${review.id}" name="id"/>
+		</div>
+		
+		<div>
+		<button th:formaction="@{add-comment}">Post Comment</button>
+		</div>
+	</form>
+	<ul>
+		<li>
+			<div th:text ="${review.comments}"></div>
+		</li>
+	</ul> -->
+	
+	
 <nav>
 		<a href="http://localhost:8080/show-categories">Homepage</a>
 </nav>

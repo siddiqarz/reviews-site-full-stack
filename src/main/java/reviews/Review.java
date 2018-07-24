@@ -1,8 +1,14 @@
 package reviews;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -18,17 +24,33 @@ public class Review {
 
 	@ManyToOne
 	private Category category; // Review will track based on categoryID since it is in the review table
-
+	
+	@ManyToMany
+	private Collection <Tag> tags;
+	
+	@ManyToMany
+	private Collection <Comment> comments;
+	
 	protected Review() { // ?
 	}
 
-	public Review(String title, String content, String imageUrl, Category category) {
+	public Review(String title, String content, String imageUrl, Category category, Tag...tags) {
 		this.title = title;
 		this.content = content;
 		this.imageUrl = imageUrl;
 		this.category = category;
+		this.tags = new HashSet<>(Arrays.asList(tags));
 	}
 
+	public void addTag(Tag newTag) {
+		tags.add(newTag);
+		
+	}
+public void deleteTag(Tag toDeleteTag) {
+		tags.remove(toDeleteTag);
+	}
+
+	//getters
 	public long getId() {
 		return id;
 	}
@@ -48,6 +70,9 @@ public class Review {
 	public Category getCategory() {
 
 		return category;
+	}
+	public Collection<Tag> getTags() {
+		return tags;
 	}
 
 	@Override
@@ -71,5 +96,10 @@ public class Review {
 			return false;
 		return true;
 	}
+
+	
+
+
+	
 
 }
