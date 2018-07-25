@@ -92,7 +92,7 @@ public class ReviewController {
 	public String addTag(@RequestParam(value = "name") String name, @RequestParam(value = "id") Long id) {
 
 		Optional<Review> tagReview = reviewRepo.findById(id);
-
+		
 		// Create and save tag
 		if (tagReview.isPresent()) {
 			Tag newTag = tagRepo.save(new Tag(name));
@@ -100,21 +100,24 @@ public class ReviewController {
 			review.addTag(newTag);
 			reviewRepo.save(review);
 		}
+		else {
+			 tagReview.get();
+		}
 		return "redirect:/review?id=" + id;
 	}
 
 	@PostMapping("/delete-tags")
 	public String deleteTag(
-		@RequestParam(value="name") String name,
-		@RequestParam(value="id") Long id) {
+		@RequestParam(value="reviewId") Long reviewId, 
+		@RequestParam(value="tagId") Long tagId){
 		
 		
 		
 		 //get tag to be deleted
-			Optional<Tag> toDeleteTag = tagRepo.findById(id);
+			Optional<Tag> toDeleteTag = tagRepo.findById(tagId);
 			
 			//get review associated with the tag id
-			Optional<Review> tagReview = reviewRepo.findById(id);
+			Optional<Review> tagReview = reviewRepo.findById(reviewId);
 			Review review = tagReview.get();
 			
 			Tag tag =toDeleteTag.get();
@@ -122,13 +125,20 @@ public class ReviewController {
 			reviewRepo.save(review);
 		
 
-	return"redirect:/review?id="+id;
+	return"redirect:/review?id="+reviewId;
 }
-	}
+	
 
-//	@RequestMapping("/add-comment")
-//	public String addComment(String comment, Long id) {
-//		
-//		return "redirect:/review?id=" + id;
-//		 
-//	}		
+	@RequestMapping("/add-comment")
+	public String addComment(String comment, Long id) {
+		
+		Optional<Review> review = reviewRepo.findById(id);
+		Review commentReview = review.get();
+		reviewRepo.save(commentReview);
+		
+		Comment newComment = commentRepo.save(new Comment(comment, commentReview));
+		
+		return "redirect:/review?id=" + id;
+		 
+	}		
+}

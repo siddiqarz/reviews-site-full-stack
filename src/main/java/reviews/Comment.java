@@ -23,9 +23,9 @@ public class Comment {
 	private Review review;
 	
 	
-	public Comment(String comment, Long id) {
+	public Comment(String comment, Review review) {
 		this.comment = comment;
-		this.id=id;
+		this.review = review;
 }
 
 	public String getComment() {

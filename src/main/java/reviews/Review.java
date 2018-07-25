@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Review {
@@ -28,7 +29,7 @@ public class Review {
 	@ManyToMany
 	private Collection <Tag> tags;
 	
-	@ManyToMany
+	@OneToMany(mappedBy="review")
 	private Collection <Comment> comments;
 	
 	protected Review() { // ?
@@ -73,6 +74,10 @@ public void deleteTag(Tag toDeleteTag) {
 	}
 	public Collection<Tag> getTags() {
 		return tags;
+	}
+	
+	public Collection<Comment> getComments(){
+		return comments;
 	}
 
 	@Override

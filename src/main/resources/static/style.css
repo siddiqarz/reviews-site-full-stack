@@ -68,3 +68,12 @@ footer{
     margin-bottom:1em;
     text-align: center;
 }
+#comments div{
+
+   margin-top: 4em;
+}
+
+.column{
+    float: left;
+    width: 33%;
+}
