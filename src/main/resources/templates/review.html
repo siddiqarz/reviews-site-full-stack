@@ -17,6 +17,28 @@
 		<h2 th:text= "${review.title}"></h2>
 		<img id = "imageUrl" th:src= "${review.imageUrl}"/><br/>
 		<p th:text = "${review.content}"></p>
+
+		<section id="comments">
+				<form method = "POST" th:action="@{/add-comment}">
+					<div  class="column">
+						<label>Share Your Comments:</label>
+						<input type="text" name="comment"/>
+					</div>
+					
+					<div  class="column">
+						
+						<input type="hidden" th:value="${review.id}" name="id"/>
+					</div>
+					
+					<div  class="column">
+					<button>Post Comment</button>
+					</div>
+				</form>
+				<ul>
+					<li class="column" id="commentText" th:each = "comment: ${review.comments}"> <a class="column" th:text="${comment.comment}"></li>
+					
+				</ul>
+				</section>
 		<ul>
 			<li>
 				<h3>Tags: <a th:each="tag: ${review.tags}" th:href="@{/tag(id=${tag.id})}" th:text=" ${tag.name} + ' '"></a>
@@ -54,27 +76,7 @@
 		<input type="submit" value="Post Comment"/>
 	</form> -->
 
-<section id="comments">
-	<form method = "POST" th:action="@{/add-comment}">
-		<div  class="column">
-			<label>Share Your Comments:</label>
-			<input type="text" name="comment"/>
-		</div>
-		
-		<div  class="column">
-			
-			<input type="hidden" th:value="${review.id}" name="id"/>
-		</div>
-		
-		<div  class="column">
-		<button>Post Comment</button>
-		</div>
-	</form>
-	<ul>
-		<li class="column" id="commentText" th:each = "comment: ${review.comments}"> <a class="column" th:text="${comment.comment}"></li>
-		
-	</ul>
-	</section>
+
 	
 <nav>
 		<a href="http://localhost:8080/show-categories">Homepage</a>
